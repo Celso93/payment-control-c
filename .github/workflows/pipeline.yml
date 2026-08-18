@@ -1,0 +1,50 @@
+name: 'Execução da Pipeline'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
+
+      - name: Instalando dependências
+        run: npm install &
+      
+      - name: Instalando dependências
+        run: sleep 10
+
+  api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
+
+      - name: Instalando dependências
+        run: npm install
+
+      - name: Executando testes unitários
+        run: npm run test
+
+      # - name: Salvando relatórios de testes
+      #   uses: actions/upload-artifact@v4
+      #   if: ${{ always() }}
+      #   with:
+      #     path: ./mochawesome-report
+      #     name: Relatório de Testes Unitários

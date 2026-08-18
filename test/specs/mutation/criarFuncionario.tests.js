@@ -1,6 +1,7 @@
 const request = require('supertest');
 const { expect } = require('chai');
 const { login } = require('../../helpers/login');
+const  { criarFuncionario } = require('../../helpers/criarFuncionario');
 
 describe('Mutation - Criar Funcionario', () => {
     let tokenResponse;
@@ -18,25 +19,7 @@ describe('Mutation - Criar Funcionario', () => {
             admissao: "2023-01-15",
             desligamento: null
         };
-
-        const response = await request('http://localhost:4000')
-            .post('/graphql')
-            .set('Authorization', `Bearer ${tokenResponse.body.data.login.token}`)
-            .send({
-                query: `mutation CriarFuncionario($input: CriarFuncionarioInput!) {
-                            criarFuncionario(input: $input) {
-                                id
-                                cpf
-                                nome
-                                salario_base
-                                admissao
-                                desligamento
-                            }
-                        }`,
-                variables: {
-                    input: funcionarioInput
-                }
-            })
+        const response = await criarFuncionario(tokenResponse.body.data.login.token, funcionarioInput);
 
         expect(response.status).to.equal(200);
         expect(response.body.data.criarFuncionario).to.be.an('object');
@@ -57,25 +40,7 @@ describe('Mutation - Criar Funcionario', () => {
             desligamento: null
         };
 
-        const response = await request('http://localhost:4000')
-            .post('/graphql')
-            .set('Authorization', `Bearer invalid-token`)
-            .send({
-                query: `mutation CriarFuncionario($input: CriarFuncionarioInput!) {
-                            criarFuncionario(input: $input) {
-                                id
-                                cpf
-                                nome
-                                salario_base
-                                admissao
-                                desligamento
-                            }
-                        }`,
-                variables: {
-                    input: funcionarioInput
-                }
-            })
-
+        const response = await criarFuncionario("token-invalido", funcionarioInput);
         expect(response.status).to.equal(200);
         expect(response.body.errors[0].message).to.equal('Autenticação obrigatória.')
         expect(response.body.errors[0].extensions.code).to.equal('UNAUTHENTICATED')
@@ -90,43 +55,8 @@ describe('Mutation - Criar Funcionario', () => {
             desligamento: null
         };
 
-        const usuario1 = await request('http://localhost:4000')
-            .post('/graphql')
-            .set('Authorization', `Bearer ${tokenResponse.body.data.login.token}`)
-            .send({
-                query: `mutation CriarFuncionario($input: CriarFuncionarioInput!) {
-                            criarFuncionario(input: $input) {
-                                id
-                                cpf
-                                nome
-                                salario_base
-                                admissao
-                                desligamento
-                            }
-                        }`,
-                variables: {
-                    input: funcionarioInput
-                }
-            }).expect(200);
-
-        const response = await request('http://localhost:4000')
-            .post('/graphql')
-            .set('Authorization', `Bearer ${tokenResponse.body.data.login.token}`)
-            .send({
-                query: `mutation CriarFuncionario($input: CriarFuncionarioInput!) {
-                            criarFuncionario(input: $input) {
-                                id
-                                cpf
-                                nome
-                                salario_base
-                                admissao
-                                desligamento
-                            }
-                        }`,
-                variables: {
-                    input: funcionarioInput
-                }
-            })
+        const usuario = await criarFuncionario(tokenResponse.body.data.login.token, funcionarioInput);
+        const response = await criarFuncionario(tokenResponse.body.data.login.token, funcionarioInput);
 
         expect(response.status).to.equal(200);
         expect(response.body.errors[0].message).to.equal('Já existe funcionário com este CPF.')
