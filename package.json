@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "test": "node --test"
+    "test": "mocha test/specs/mutation",
+    "test:report": "mocha test/specs/mutation --reporter mochawesome --reporter-options reportDir=reports,reportFilename=mutation-report,quiet=true"
   },
   "dependencies": {
     "@apollo/server": "^5.0.0",
@@ -18,5 +19,11 @@
     "express": "^5.1.0",
     "graphql": "^16.11.0",
     "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "chai": "^4.5.0",
+    "mocha": "^11.3.0",
+    "mochawesome": "^8.0.1",
+    "supertest": "^7.2.2"
   }
 }

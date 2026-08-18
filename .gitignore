@@ -1,3 +1,25 @@
-node_modules/
+# Dependencies
+/node_modules
+
+# Environment variables
+# Nunca versione arquivos com segredos (chaves de API, senhas de banco, etc.)
 .env
+*.env
+.env.local
+
+# Logs
+logs
+*.log
 npm-debug.log*
+
+# Relatórios de teste e cobertura
+# Gerados por ferramentas como Mocha, Jest, Istanbul, etc.
+/reports
+/mochawesome-report
+/coverage
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
+
+
