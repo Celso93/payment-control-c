@@ -1,3 +1,5 @@
+// Schema do grapqhql
+// Definição dos tipos, queries e mutations (Contrato da API)
 const typeDefs = `#graphql
   type Usuario { id: ID!, email: String!, nome: String!, ativo: Boolean! }
   type Funcionario { id: ID!, cpf: String!, nome: String!, salario_base: Float!, admissao: String!, desligamento: String }

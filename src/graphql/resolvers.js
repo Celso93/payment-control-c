@@ -1,3 +1,4 @@
+// Nossa api, onde o servidor bate !
 const { GraphQLError } = require('graphql');
 const authService = require('../services/authService');
 const userService = require('../services/userService');
